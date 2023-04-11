@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -8,8 +6,10 @@ import 'network/api/index_api.dart';
 import 'network/http/service_manager.dart';
 import 'network/service/custom_service.dart';
 
+import 'loadMoreList.dart';
+
 void main() {
-  runApp(GetMaterialApp(
+  runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
     defaultTransition: Transition.fade,
     home: Home(),
@@ -24,7 +24,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("appBar")), body: TestBody());
+    return Scaffold(
+        appBar: AppBar(title: Text("appBar")), body: OnlyListView());
   }
 }
 
