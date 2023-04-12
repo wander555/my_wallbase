@@ -26,8 +26,8 @@ class CustomService extends Service {
     dio.options.baseUrl =
         "https://wallhaven.cc/api/v1"; //此处只是默认的baseUrl  可通过路由改变baseUrl
 
-    dio.options.connectTimeout = Duration(seconds: 10);
-    dio.options.receiveTimeout = Duration(seconds: 10);
+    dio.options.connectTimeout = Duration(seconds: 20);
+    dio.options.receiveTimeout = Duration(seconds: 20);
     // dio.options.contentType = "application/json";
     //这里还可以添加其他插件
     dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));

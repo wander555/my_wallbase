@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -24,24 +23,28 @@ class _ItemState extends State<Item> {
     // final imgHeight = imgWidth * (3840 / 2160) * 2;
 
     return Container(
-      child: Card(
-        //图片撑满布局
-        child: ConstrainedBox(
-          child: CachedNetworkImage(
-            imageUrl: widget.thumUrl,
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-            fit: BoxFit.cover,
-          ),
-          constraints: new BoxConstraints.expand(),
+      //图片撑满布局
+      child: ConstrainedBox(
+        child: CachedNetworkImage(
+          imageUrl: widget.thumUrl,
+          placeholder: (context, url) =>
+              Image.network("http://via.placeholder.com/169x300"),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+          fit: BoxFit.cover,
         ),
+        constraints: new BoxConstraints.expand(),
+      ),
+
+      //切圆角
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
       ),
     );
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }

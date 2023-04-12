@@ -55,6 +55,10 @@ class _OnlyGridViewState extends State<OnlyGridView> {
       enablePullUp: true,
       child: buildCtn(),
       header: WaterDropMaterialHeader(),
+      footer: ClassicFooter(
+        loadStyle: LoadStyle.ShowWhenLoading,
+        completeDuration: Duration(milliseconds: 500),
+      ),
       onRefresh: () async {
         _page = 1;
         query = {...query, "page": _page};
@@ -85,6 +89,7 @@ class _OnlyGridViewState extends State<OnlyGridView> {
             errorCallBack: (error) {
               logger.e(error);
               _refreshController.loadFailed();
+              _page--;
             });
       },
     );
