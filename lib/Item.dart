@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,31 +35,35 @@ class _ItemState extends State<Item> {
       onTap: () {
         // Get.defaultDialog(title: widget.url);
         Get.to(WallPaperInfo(
-            id: widget.id, url: widget.thumUrl, colors: widget.colors));
+          id: widget.id,
+          url: widget.url,
+          colors: widget.colors,
+          thumUrl: widget.thumUrl,
+        ));
       },
       child: Container(
         //图片撑满布局
         child: ConstrainedBox(
-          // child: CachedNetworkImage(
-          //   imageUrl: widget.thumUrl,
-          //   // 用图片占位
-          //   // placeholder: (context, url) =>
-          //   //     Image.network("http://via.placeholder.com/169x300"),
+          child: CachedNetworkImage(
+            imageUrl: widget.thumUrl,
+            // 用图片占位
+            // placeholder: (context, url) =>
+            //     Image.network("http://via.placeholder.com/169x300"),
 
-          //   //高斯模糊背景图占位
-          //   placeholder: (context, url) => Container(
-          //     child: BackdropFilter(
-          //       filter: ImageFilter.blur(
-          //         sigmaX: 20,
-          //         sigmaY: 20,
-          //       ),
-          //       child: Container(color: HexColor(widget.colors[1])),
-          //     ),
-          //   ),
-          //   errorWidget: (context, url, error) => Icon(Icons.error),
-          //   fit: BoxFit.cover,
-          // ),
-          child: Container(color: Colors.lightBlue),
+            //高斯模糊背景图占位
+            placeholder: (context, url) => Container(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 20,
+                  sigmaY: 20,
+                ),
+                child: Container(color: HexColor(widget.colors[1])),
+              ),
+            ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            fit: BoxFit.cover,
+          ),
+          // child: Container(color: Colors.lightBlue),
           constraints: new BoxConstraints.expand(),
         ),
 

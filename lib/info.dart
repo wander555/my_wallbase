@@ -7,11 +7,16 @@ import 'package:get/get.dart';
 
 class WallPaperInfo extends StatefulWidget {
   final String url;
+  final String thumUrl;
   final String id;
   final List colors;
 
   const WallPaperInfo(
-      {super.key, required this.id, required this.url, required this.colors});
+      {super.key,
+      required this.id,
+      required this.url,
+      required this.colors,
+      required this.thumUrl});
 
   @override
   State<WallPaperInfo> createState() => _WallPaperInfoState();
@@ -25,8 +30,10 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
         child: CachedNetworkImage(
           imageUrl: widget.url,
           // 用图片占位
-          // placeholder: (context, url) =>
-          //     Image.network("http://via.placeholder.com/169x300"),
+          placeholder: (context, url) => CachedNetworkImage(
+            imageUrl: widget.thumUrl,
+            fit: BoxFit.cover,
+          ),
 
           //高斯模糊背景图占位
           // placeholder: (context, url) => Container(
@@ -35,7 +42,7 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
           //       sigmaX: 20,
           //       sigmaY: 20,
           //     ),
-          //     child: Container(color: HexColor(widget.colors[1])),
+          //     child: Container(color: HexColor(widget.colors[0])),
           //   ),
           // ),
           errorWidget: (context, url, error) => Icon(Icons.error),

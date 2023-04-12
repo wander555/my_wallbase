@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import 'network/http/service_manager.dart';
 import 'network/service/custom_service.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 import 'loadMoreGrid.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
     defaultTransition: Transition.fade,
@@ -16,6 +16,8 @@ void main() {
 
   //注册服务
   ServiceManager().registeredService(CustomService());
+
+  await FlutterDisplayMode.setHighRefreshRate();
 }
 
 class Controller extends GetxController {}
