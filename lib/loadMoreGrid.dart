@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'Item.dart';
 import 'package:logger/logger.dart';
-
 import 'network/api/index_api.dart';
 
 class OnlyGridView extends StatefulWidget {

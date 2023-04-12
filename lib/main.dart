@@ -18,11 +18,15 @@ void main() {
   ServiceManager().registeredService(CustomService());
 }
 
+class Controller extends GetxController {}
+
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Controller c = Get.put(Controller());
+
     return Scaffold(
         appBar: AppBar(title: Text("appBar")),
         body: RefreshConfiguration(
@@ -46,4 +50,16 @@ class Home extends StatelessWidget {
                 true, // trigger load more by BallisticScrollActivity
             child: OnlyGridView()));
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

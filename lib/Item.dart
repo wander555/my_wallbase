@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
+import 'info.dart';
 
 class Item extends StatefulWidget {
   final String id;
@@ -22,36 +25,48 @@ class _ItemState extends State<Item> {
   @override
   Widget build(BuildContext context) {
     var logger = Logger();
-    // logger.i(widget.colors.split(","));
-    // logger.i(widget.colors[0]);
 
     // final size = MediaQuery.of(context).size;
     // final imgWidth = (size.width - 40) / 3;
     // final imgHeight = imgWidth * (3840 / 2160) * 2;
 
-    return Container(
-      //图片撑满布局
-      child: ConstrainedBox(
-        child: CachedNetworkImage(
-          imageUrl: widget.thumUrl,
+    return new GestureDetector(
+      onTap: () {
+        // Get.defaultDialog(title: widget.url);
+        Get.to(WallPaperInfo(
+            id: widget.id, url: widget.thumUrl, colors: widget.colors));
+      },
+      child: Container(
+        //图片撑满布局
+        child: ConstrainedBox(
+          // child: CachedNetworkImage(
+          //   imageUrl: widget.thumUrl,
+          //   // 用图片占位
+          //   // placeholder: (context, url) =>
+          //   //     Image.network("http://via.placeholder.com/169x300"),
 
-          // 用图片占位
-          // placeholder: (context, url) =>
-          //     Image.network("http://via.placeholder.com/169x300"),
-
-          //背景颜色占位
-          placeholder: (context, url) =>
-              Container(color: HexColor(widget.colors[0])),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-          fit: BoxFit.cover,
+          //   //高斯模糊背景图占位
+          //   placeholder: (context, url) => Container(
+          //     child: BackdropFilter(
+          //       filter: ImageFilter.blur(
+          //         sigmaX: 20,
+          //         sigmaY: 20,
+          //       ),
+          //       child: Container(color: HexColor(widget.colors[1])),
+          //     ),
+          //   ),
+          //   errorWidget: (context, url, error) => Icon(Icons.error),
+          //   fit: BoxFit.cover,
+          // ),
+          child: Container(color: Colors.lightBlue),
+          constraints: new BoxConstraints.expand(),
         ),
-        constraints: new BoxConstraints.expand(),
-      ),
 
-      //切圆角
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
+        //切圆角
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+        ),
       ),
     );
   }
