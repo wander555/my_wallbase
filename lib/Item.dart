@@ -6,8 +6,13 @@ class Item extends StatefulWidget {
   final String id;
   final String thumUrl;
   final String url;
+  final List colors;
 
-  Item({required this.id, required this.thumUrl, required this.url});
+  Item(
+      {required this.id,
+      required this.thumUrl,
+      required this.url,
+      required this.colors});
 
   @override
   _ItemState createState() => _ItemState();
@@ -17,6 +22,8 @@ class _ItemState extends State<Item> {
   @override
   Widget build(BuildContext context) {
     var logger = Logger();
+    // logger.i(widget.colors.split(","));
+    // logger.i(widget.colors[0]);
 
     // final size = MediaQuery.of(context).size;
     // final imgWidth = (size.width - 40) / 3;
@@ -27,8 +34,14 @@ class _ItemState extends State<Item> {
       child: ConstrainedBox(
         child: CachedNetworkImage(
           imageUrl: widget.thumUrl,
+
+          // 用图片占位
+          // placeholder: (context, url) =>
+          //     Image.network("http://via.placeholder.com/169x300"),
+
+          //背景颜色占位
           placeholder: (context, url) =>
-              Image.network("http://via.placeholder.com/169x300"),
+              Container(color: HexColor(widget.colors[0])),
           errorWidget: (context, url, error) => Icon(Icons.error),
           fit: BoxFit.cover,
         ),
@@ -42,9 +55,16 @@ class _ItemState extends State<Item> {
       ),
     );
   }
+}
 
-  @override
-  void dispose() {
-    super.dispose();
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
   }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

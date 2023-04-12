@@ -19,7 +19,6 @@ class _OnlyGridViewState extends State<OnlyGridView> {
 
   List<dynamic> list = [];
   int _page = 1;
-
   IndexApi api = IndexApi();
   Map<String, dynamic> query = {
     "topRange": "1d",
@@ -43,7 +42,8 @@ class _OnlyGridViewState extends State<OnlyGridView> {
       itemBuilder: (c, i) => Item(
           id: list[i]["id"],
           thumUrl: list[i]["thumbs"]["original"],
-          url: list[i]["path"]),
+          url: list[i]["path"],
+          colors: list[i]["colors"]),
       itemCount: list.length,
     );
   }
