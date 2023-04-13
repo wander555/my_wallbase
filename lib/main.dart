@@ -10,7 +10,7 @@ import 'loadMoreGrid.dart';
 Future<void> main() async {
   runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    defaultTransition: Transition.fade,
+    defaultTransition: Transition.zoom,
     home: Home(),
   ));
 

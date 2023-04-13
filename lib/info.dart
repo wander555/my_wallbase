@@ -35,16 +35,8 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
             fit: BoxFit.cover,
           ),
 
-          //高斯模糊背景图占位
-          // placeholder: (context, url) => Container(
-          //   child: BackdropFilter(
-          //     filter: ImageFilter.blur(
-          //       sigmaX: 20,
-          //       sigmaY: 20,
-          //     ),
-          //     child: Container(color: HexColor(widget.colors[0])),
-          //   ),
-          // ),
+          // progressIndicatorBuilder: (context, url, downloadProgress) =>
+          //     CircularProgressIndicator(value: downloadProgress.progress),
           errorWidget: (context, url, error) => Icon(Icons.error),
           fit: BoxFit.cover,
         ),

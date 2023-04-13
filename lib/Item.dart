@@ -31,6 +31,7 @@ class _ItemState extends State<Item> {
     // final imgWidth = (size.width - 40) / 3;
     // final imgHeight = imgWidth * (3840 / 2160) * 2;
 
+    //添加手势
     return new GestureDetector(
       onTap: () {
         // Get.defaultDialog(title: widget.url);
