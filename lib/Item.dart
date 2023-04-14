@@ -58,7 +58,18 @@ class _ItemState extends State<Item> {
                   sigmaX: 20,
                   sigmaY: 20,
                 ),
-                child: Container(color: HexColor(widget.colors[1])),
+
+                //使用渐变色
+                child: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: widget.colors
+                              .map((element) => HexColor(element))
+                              .toList(),
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          tileMode: TileMode.mirror)),
+                ),
               ),
             ),
             errorWidget: (context, url, error) => Icon(Icons.error),
