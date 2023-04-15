@@ -11,12 +11,14 @@ class Item extends StatefulWidget {
   final String thumUrl;
   final String url;
   final List colors;
+  final int favorites;
 
   Item(
       {required this.id,
       required this.thumUrl,
       required this.url,
-      required this.colors});
+      required this.colors,
+      required this.favorites});
 
   @override
   _ItemState createState() => _ItemState();
@@ -27,8 +29,6 @@ class _ItemState extends State<Item> {
   Widget build(BuildContext context) {
     var logger = Logger();
 
-    // final size = MediaQuery.of(context).size;
-    // final imgWidth = (size.width - 40) / 3;
     // final imgHeight = imgWidth * (3840 / 2160) * 2;
 
     //添加手势
@@ -36,11 +36,11 @@ class _ItemState extends State<Item> {
       onTap: () {
         // Get.defaultDialog(title: widget.url);
         Get.to(WallPaperInfo(
-          id: widget.id,
-          url: widget.url,
-          colors: widget.colors,
-          thumUrl: widget.thumUrl,
-        ));
+            id: widget.id,
+            url: widget.url,
+            colors: widget.colors,
+            thumUrl: widget.thumUrl,
+            favorites: widget.favorites));
       },
       child: Container(
         //图片撑满布局

@@ -10,13 +10,15 @@ class WallPaperInfo extends StatefulWidget {
   final String thumUrl;
   final String id;
   final List colors;
+  final int favorites;
 
   const WallPaperInfo(
       {super.key,
       required this.id,
       required this.url,
       required this.colors,
-      required this.thumUrl});
+      required this.thumUrl,
+      required this.favorites});
 
   @override
   State<WallPaperInfo> createState() => _WallPaperInfoState();
@@ -27,21 +29,74 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
   Widget build(BuildContext context) {
     return Container(
       child: ConstrainedBox(
-        child: CachedNetworkImage(
-          imageUrl: widget.url,
-          // 用图片占位
-          placeholder: (context, url) => CachedNetworkImage(
-            imageUrl: widget.thumUrl,
-            fit: BoxFit.cover,
-          ),
+        constraints: BoxConstraints.expand(),
 
-          // progressIndicatorBuilder: (context, url, downloadProgress) =>
-          //     CircularProgressIndicator(value: downloadProgress.progress),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-          fit: BoxFit.cover,
-        ),
+        // child: CachedNetworkImage(
+        //   imageUrl: widget.url,
+        //   // 用图片占位
+        //   placeholder: (context, url) => CachedNetworkImage(
+        //     imageUrl: widget.thumUrl,
+        //     fit: BoxFit.cover,
+        //   ),
+
+        //   // progressIndicatorBuilder: (context, url, downloadProgress) =>
+        //   //     CircularProgressIndicator(value: downloadProgress.progress),
+        //   errorWidget: (context, url, error) => Icon(Icons.error),
+        //   fit: BoxFit.cover,
+        // ),
         // child: Container(color: Colors.lightBlue),
-        constraints: new BoxConstraints.expand(),
+
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints.expand(),
+              child: CachedNetworkImage(
+                imageUrl: widget.url,
+                // 用图片占位
+                placeholder: (context, url) => CachedNetworkImage(
+                  imageUrl: widget.thumUrl,
+                  fit: BoxFit.cover,
+                ),
+
+                // progressIndicatorBuilder: (context, url, downloadProgress) =>
+                //     CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+                left: 12.0,
+                top: 12.0,
+                child: Opacity(
+                    opacity: 0.3,
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                            size: 16,
+                          ),
+                          Text(
+                            widget.favorites.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                decoration: TextDecoration.none),
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.black),
+                      padding: EdgeInsets.only(
+                          left: 10, right: 10, top: 2, bottom: 2),
+                    ))),
+          ],
+        ),
       ),
     );
   }

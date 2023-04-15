@@ -42,7 +42,8 @@ class _OnlyGridViewState extends State<OnlyGridView> {
           id: list[i]["id"],
           thumUrl: list[i]["thumbs"]["original"],
           url: list[i]["path"],
-          colors: list[i]["colors"]),
+          colors: list[i]["colors"],
+          favorites: list[i]["favorites"]),
       itemCount: list.length,
     );
   }
