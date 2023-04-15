@@ -49,6 +49,22 @@ class _OnlyGridViewState extends State<OnlyGridView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _requestPermission();
+  }
+
+  _requestPermission() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    final info = statuses[Permission.storage].toString();
+    logger.i(info);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SmartRefresher(
       controller: _refreshController,

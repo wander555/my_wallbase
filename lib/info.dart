@@ -1,6 +1,9 @@
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,6 +28,20 @@ class WallPaperInfo extends StatefulWidget {
 }
 
 class _WallPaperInfoState extends State<WallPaperInfo> {
+  Logger logger = new Logger();
+  void _downloadImg(String url, String id) async {
+    logger.i(url);
+
+    var response = await Dio()
+        .get(url, options: Options(responseType: ResponseType.bytes));
+    final result = await ImageGallerySaver.saveImage(
+        Uint8List.fromList(response.data),
+        quality: 100,
+        name: id);
+
+    logger.i(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -95,6 +112,22 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
                       padding: EdgeInsets.only(
                           left: 10, right: 10, top: 2, bottom: 2),
                     ))),
+            Positioned(
+                bottom: 30,
+                child: Container(
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => _downloadImg(widget.url, widget.id),
+                        child: Icon(
+                          Icons.download,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                      )
+                    ],
+                  ),
+                ))
           ],
         ),
       ),
