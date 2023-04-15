@@ -39,12 +39,12 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
         quality: 100,
         name: id);
 
-    logger.i(result);
+    logger.d(result);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea(
       child: ConstrainedBox(
         constraints: BoxConstraints.expand(),
 

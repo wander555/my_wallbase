@@ -3,6 +3,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'Item.dart';
 import 'package:logger/logger.dart';
 import 'network/api/index_api.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class OnlyGridView extends StatefulWidget {
   @override
@@ -20,11 +21,13 @@ class _OnlyGridViewState extends State<OnlyGridView> {
   int _page = 1;
   IndexApi api = IndexApi();
   Map<String, dynamic> query = {
-    "topRange": "1d",
+    // "topRange": "1y",
     "apikey": "dKH33i2L11kM1ZzuiT8MIPm9hYCQ74Tb",
-    "resolutions": "2160x3840",
-    "sorting": "favorites",
-    "purity": "100",
+    // "resolutions": "2160x3840",
+    // "atleast": "2160x3840",
+    "sorting":
+        "views", //date_added*, relevance, random, views, favorites, toplist
+    "purity": "100", //100*/110/111/etc (sfw/sketchy/nsfw)
   };
 
   //构建子类
@@ -51,7 +54,6 @@ class _OnlyGridViewState extends State<OnlyGridView> {
   @override
   void initState() {
     super.initState();
-
     _requestPermission();
   }
 
