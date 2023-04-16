@@ -4,20 +4,29 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'network/http/service_manager.dart';
 import 'network/service/custom_service.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'loadMoreGrid.dart';
 
-Future<void> main() async {
-  runApp(const GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    defaultTransition: Transition.zoom,
-    home: Home(),
-  ));
-
-  //注册服务
+void main() {
+  runApp(MyApp());
+  //   //注册api服务
   ServiceManager().registeredService(CustomService());
+  FlutterDisplayMode.setHighRefreshRate();
+}
 
-  await FlutterDisplayMode.setHighRefreshRate();
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      defaultTransition: Transition.zoom,
+      home: Home(),
+      builder: EasyLoading.init(),
+    );
+  }
 }
 
 class Controller extends GetxController {}

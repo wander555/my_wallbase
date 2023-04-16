@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
@@ -7,6 +8,9 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:async_wallpaper/async_wallpaper.dart';
+import 'package:uri_to_file/uri_to_file.dart';
 
 class WallPaperInfo extends StatefulWidget {
   final String url;
@@ -29,17 +33,49 @@ class WallPaperInfo extends StatefulWidget {
 
 class _WallPaperInfoState extends State<WallPaperInfo> {
   Logger logger = new Logger();
-  void _downloadImg(String url, String id) async {
-    logger.i(url);
+
+  //下载图片
+  _downloadImg(String url, String id) async {
+    EasyLoading.show(status: '正在设置...');
 
     var response = await Dio()
         .get(url, options: Options(responseType: ResponseType.bytes));
     final result = await ImageGallerySaver.saveImage(
-        Uint8List.fromList(response.data),
+        Uint8List.fromList(response.data), //转字节
         quality: 100,
         name: id);
+    return result;
+  }
 
-    logger.d(result);
+  //设置为背景图片
+  Future<void> setWallpaperFromFile(String url, String id) async {
+    String filePath = "";
+    await _downloadImg(url, id).then((data) async {
+      File file = await toFile(data['filePath']);
+      filePath = file.path;
+    });
+
+    logger.i(filePath);
+
+    String result = "";
+    try {
+      result = await AsyncWallpaper.setWallpaperFromFile(
+        filePath: filePath,
+        wallpaperLocation: AsyncWallpaper.HOME_SCREEN,
+        // goToHome: goToHome,
+        // toastDetails: ToastDetails.success(),
+        // errorToastDetails: ToastDetails.error(),
+      )
+          ? '设置成功!'
+          : '设置失败!';
+      logger.e(result);
+    } on Exception catch (e) {
+      logger.e(e);
+      result = '获取失败!';
+    }
+
+    EasyLoading.showSuccess(result);
+    EasyLoading.dismiss();
   }
 
   @override
@@ -118,7 +154,8 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
                   child: Row(
                     children: [
                       GestureDetector(
-                        onTap: () => _downloadImg(widget.url, widget.id),
+                        onTap: () =>
+                            setWallpaperFromFile(widget.url, widget.id),
                         child: Icon(
                           Icons.download,
                           color: Colors.red,

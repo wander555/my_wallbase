@@ -21,12 +21,12 @@ class _OnlyGridViewState extends State<OnlyGridView> {
   int _page = 1;
   IndexApi api = IndexApi();
   Map<String, dynamic> query = {
-    // "topRange": "1y",
+    "topRange": "1d",
     "apikey": "dKH33i2L11kM1ZzuiT8MIPm9hYCQ74Tb",
-    // "resolutions": "2160x3840",
+    "resolutions": "2160x3840",
     // "atleast": "2160x3840",
     "sorting":
-        "views", //date_added*, relevance, random, views, favorites, toplist
+        "date_added", //date_added*, relevance, random, views, favorites, toplist
     "purity": "100", //100*/110/111/etc (sfw/sketchy/nsfw)
   };
 
