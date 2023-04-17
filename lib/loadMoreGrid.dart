@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:my_wallbase/permission_check.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'Item.dart';
 import 'package:logger/logger.dart';
@@ -54,16 +57,7 @@ class _OnlyGridViewState extends State<OnlyGridView> {
   @override
   void initState() {
     super.initState();
-    _requestPermission();
-  }
-
-  _requestPermission() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-    ].request();
-
-    final info = statuses[Permission.storage].toString();
-    logger.i(info);
+    // _requestPermission();
   }
 
   @override

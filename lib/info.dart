@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:async_wallpaper/async_wallpaper.dart';
+import 'package:my_wallbase/permission_check.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uri_to_file/uri_to_file.dart';
 
 class WallPaperInfo extends StatefulWidget {
@@ -36,8 +38,14 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
 
   //下载图片
   _downloadImg(String url, String id) async {
-    EasyLoading.show(status: '正在设置...');
+    bool permission_result = await _requestPermission();
 
+    if (!permission_result) {
+      EasyLoading.showError("下载失败!");
+      return false;
+    }
+
+    EasyLoading.show(status: '正在设置...');
     var response = await Dio()
         .get(url, options: Options(responseType: ResponseType.bytes));
     final result = await ImageGallerySaver.saveImage(
@@ -48,34 +56,49 @@ class _WallPaperInfoState extends State<WallPaperInfo> {
   }
 
   //设置为背景图片
-  Future<void> setWallpaperFromFile(String url, String id) async {
+  void setWallpaperFromFile(String url, String id) async {
     String filePath = "";
     await _downloadImg(url, id).then((data) async {
-      File file = await toFile(data['filePath']);
-      filePath = file.path;
+      if (data) {
+        File file = await toFile(data['filePath']);
+        filePath = file.path;
+      } else {
+        filePath = "";
+      }
     });
 
-    logger.i(filePath);
+    // logger.i(filePath);
 
-    String result = "";
-    try {
-      result = await AsyncWallpaper.setWallpaperFromFile(
-        filePath: filePath,
-        wallpaperLocation: AsyncWallpaper.HOME_SCREEN,
-        // goToHome: goToHome,
-        // toastDetails: ToastDetails.success(),
-        // errorToastDetails: ToastDetails.error(),
-      )
-          ? '设置成功!'
-          : '设置失败!';
-      logger.e(result);
-    } on Exception catch (e) {
-      logger.e(e);
-      result = '获取失败!';
+    if (filePath == "") {
+      EasyLoading.showError("设置失败!");
+    } else {
+      String result = "";
+      try {
+        result = await AsyncWallpaper.setWallpaperFromFile(
+          filePath: filePath,
+          wallpaperLocation: AsyncWallpaper.HOME_SCREEN,
+          goToHome: false,
+          // toastDetails: ToastDetails.success(),
+          // errorToastDetails: ToastDetails.error(),
+        )
+            ? '设置成功!'
+            : '设置失败!';
+        logger.e(result);
+      } on Exception catch (e) {
+        logger.e(e);
+        result = '获取失败!';
+      }
+
+      EasyLoading.showSuccess(result);
+      EasyLoading.dismiss();
     }
+  }
 
-    EasyLoading.showSuccess(result);
-    EasyLoading.dismiss();
+//申请权限
+  _requestPermission() async {
+    bool result =
+        await permissionCheckAndRequest(context, Permission.storage, "存储");
+    return result;
   }
 
   @override
